@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RU Library Lite</string>
+    <string name="sign_in">sign in</string>
+    <string name="password">password</string>
+    <string name="sign_up">sign up</string>
+    <string name="username">username</string>
 </resources>

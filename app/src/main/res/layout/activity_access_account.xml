@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="tinietdev.rulibrarylite.AccessAccount"
+    android:background="@drawable/loginpape">
+
+    <Button
+        android:text="@string/sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signinButton"
+        android:textSize="12sp"
+        android:layout_marginTop="107dp"
+        android:layout_below="@+id/passwordField"
+        android:layout_alignStart="@+id/passwordField"
+        android:layout_alignEnd="@+id/passwordField" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_below="@+id/usernameField"
+        android:layout_alignEnd="@+id/usernameField"
+        android:layout_marginTop="22dp"
+        android:id="@+id/passwordField"
+        android:hint="@string/password" />
+
+    <Button
+        android:text="@string/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signupButton"
+        android:textSize="12sp"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/signinButton"
+        android:layout_alignStart="@+id/signinButton"
+        android:layout_alignEnd="@+id/signinButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="157dp"
+        android:id="@+id/usernameField"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:id="@+id/underscore2"
+        android:layout_below="@+id/passwordField"
+        android:layout_alignStart="@+id/passwordField"
+        android:layout_alignEnd="@+id/passwordField" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:id="@+id/underscore1"
+        android:layout_below="@+id/usernameField"
+        android:layout_alignStart="@+id/usernameField"
+        android:layout_alignEnd="@+id/usernameField" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_marginTop="43dp"
+        android:id="@+id/button7"
+        android:background="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="60dp" />
+
+</RelativeLayout>
+
