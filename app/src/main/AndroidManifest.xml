@@ -16,7 +16,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AccessAccount" />
-        <activity android:name=".fullScreenActivityTest"></activity>
+        <activity android:name=".fullScreenActivityTest" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".lkalsdkaslkdj"></activity>
     </application>
 
 </manifest>
