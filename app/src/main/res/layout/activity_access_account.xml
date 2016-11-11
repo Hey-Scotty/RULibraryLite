@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tinietdev.rulibrarylite.AccessAccount"
-    android:background="@drawable/loginpape">
+    android:background="@drawable/pape">
 
     <Button
         android:text="@string/sign_in"
