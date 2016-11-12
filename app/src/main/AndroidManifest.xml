@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.weebly.httplexiconindustries.ru">
+    package="ru">
 
     <application
         android:allowBackup="true"
@@ -8,16 +8,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccessAccount" />
-        <activity android:name=".TestActivity" />
-        <activity android:name=".lkalsdkaslkdj"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".UserAreaActivity" />
+        <activity android:name=".SearchHomeActivity"/>
+        <activity android:name="ru.search"/>
     </application>
 
 </manifest>
