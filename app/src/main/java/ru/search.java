@@ -1,13 +1,15 @@
-package com.weebly.httplexiconindustries.ru;
+package ru;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class TestActivity extends AppCompatActivity {
+import com.weebly.httplexiconindustries.ru.R;
+
+public class search extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_search);
     }
 }
