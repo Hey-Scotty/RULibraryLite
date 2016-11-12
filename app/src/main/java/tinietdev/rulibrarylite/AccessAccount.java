@@ -3,7 +3,8 @@
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.weebly.httplexiconindustries.ru.R;
+import ru.R;
+
 
   public class AccessAccount extends AppCompatActivity {
 

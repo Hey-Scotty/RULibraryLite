@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.weebly.httplexiconindustries.ru.R;
+
 
 public class UserAreaActivity extends AppCompatActivity {
 
