@@ -17,8 +17,9 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity" />
-        <activity android:name=".SearchHomeActivity"/>
-        <activity android:name="ru.search"/>
+        <activity android:name=".SearchHomeActivity" />
+        <activity android:name=".search" />
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>
