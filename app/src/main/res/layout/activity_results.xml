@@ -17,14 +17,14 @@
         android:ems="10"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/editText"
+        android:id="@+id/searchField"
         android:hint="search"
-        android:layout_toStartOf="@+id/button" />
+        android:layout_toStartOf="@+id/GoButton" />
 
     <Button
         android:text="go"
         android:layout_width="60dp"
-        android:id="@+id/button"
+        android:id="@+id/GoButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_height="45dp" />
@@ -32,18 +32,18 @@
     <View
         android:layout_height="1dp"
         android:background="#808080"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/searchField"
         android:layout_alignParentStart="true"
         android:layout_width="290dp" />
 
-    <EditText
+    <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_below="@+id/button"
-        android:id="@+id/editText2"
+        android:id="@+id/resultsField"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/GoButton" />
+
 </RelativeLayout>
