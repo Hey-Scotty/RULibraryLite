@@ -24,20 +24,22 @@
         android:layout_toStartOf="@+id/GoButton" />
 
     <View
+        android:id="@+id/underline"
         android:layout_height="1dp"
         android:background="#808080"
         android:layout_below="@+id/searchField"
         android:layout_alignParentStart="true"
         android:layout_width="290dp"
         android:layout_toLeftOf="@+id/GoButton"
-        android:layout_toStartOf="@+id/GoButton" />
+        android:layout_toStartOf="@+id/GoButton"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:text="go"
         android:layout_width="60dp"
         android:id="@+id/GoButton"
         android:layout_height="45dp"
-        android:layout_above="@+id/view4"
+        android:layout_above="@+id/underline"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -51,12 +53,16 @@
         android:id="@+id/srLabel"
         android:textSize="17sp" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <GridView
         android:layout_below="@+id/srLabel"
-        android:id="@+id/resultsListView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="90dp"
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:id="@+id/resultsGrid" />
 
 </RelativeLayout>

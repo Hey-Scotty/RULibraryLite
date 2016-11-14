@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         continueLink.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent continueIntent = new Intent(LoginActivity.this, SearchHomeActivity.class);
+                Intent continueIntent = new Intent(LoginActivity.this, ResultsActivity.class);
                 LoginActivity.this.startActivity(continueIntent);
             }
         });
