@@ -15,7 +15,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+ /*
+ Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV
+  */
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
+ /*
+ Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV
+  */
 
 public class UserAreaActivity extends AppCompatActivity {
 

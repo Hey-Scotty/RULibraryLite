@@ -1,8 +1,8 @@
 package ru;
 
-/**
- * Created by Sam on 11/8/2016.
- */
+ /*
+ Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV
+  */
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
