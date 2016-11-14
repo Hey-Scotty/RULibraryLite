@@ -16,6 +16,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class ResultsActivity extends AppCompatActivity {
@@ -54,6 +55,41 @@ public class ResultsActivity extends AppCompatActivity {
     }
     private void buildList(){
 
+    }
+    private void createBooks() throws IOException {
+        LinkedList<BookResult> linkedlist = new LinkedList<BookResult>();
+
+        String searchURL = "https://radforduniversity.on.worldcat.org/search?"
+                + "databaseList=283&queryString=";
+        String phrase = "lord+of+the+flies";
+        Document doc;
+        doc = Jsoup.connect(searchURL + phrase).get();
+        Elements title = doc.getElementsByClass("record-title");
+        for (Element titles : title) {
+            String text = titles.ownText();
+            BookResult temp = new BookResult(text);
+        }
+        Elements img = doc.getElementsByTag("img");
+        int counter = 0;
+        int removeDoop = 0;
+        // Loop through img tags
+        for (Element el : img) {
+            if (el.attr("src").substring(0, 2).equals("//")) {
+                //each image occured twice this is to prevent duplicate images being added
+                if(removeDoop%2 == 0){
+                    linkedlist.get(counter).setImgURL(el.attr("src"));
+                    counter++;
+                }
+                removeDoop++;
+            }
+
+        }
+    }
+    private String sanitizeInput(String input){
+        String output = input.replaceAll("[^A-Za-z0-9 ]", "");;
+        output = output.trim();
+        output = output.replaceAll("\\s+", "+");
+        return output;
     }
     private String pullSearchInfo(String searchInput) throws IOException {
         String output = "";
