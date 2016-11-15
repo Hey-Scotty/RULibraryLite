@@ -54,7 +54,6 @@
         android:textSize="17sp" />
 
     <GridView
-        android:layout_below="@+id/srLabel"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="90dp"
@@ -63,6 +62,17 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        android:id="@+id/resultsGrid" />
+        android:id="@+id/resultsGrid"
+        android:layout_below="@+id/srLabel" />
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </RelativeLayout>
 </RelativeLayout>

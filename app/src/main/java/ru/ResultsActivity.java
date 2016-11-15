@@ -61,23 +61,12 @@ public class ResultsActivity extends AppCompatActivity {
 
             public void onClick(View v){
                 sanitizedSearch = sanitizeInput(searchField.getText().toString());
-                try {
-                    createBooks(sanitizedSearch);
-                    ArrayList<String> bookTitles = new ArrayList<String>();
-                    int index = 0;
-                    for(BookResult book:  bookList){
-                        bookTitles.add(book.getName());
-                        System.out.println(book.getImgURL());
-                    }
-                    ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
-                    //String searchOutput = pullSearchInfo(sanitizedSearch);
-                    //Editable output = new SpannableStringBuilder(searchOutput);
-                    //textOut.setText(getInput.getText(output));
-                    //textOut.setText(output);
+                search(sanitizedSearch);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //String searchOutput = pullSearchInfo(sanitizedSearch);
+                //Editable output = new SpannableStringBuilder(searchOutput);
+                //textOut.setText(getInput.getText(output));
+                //textOut.setText(output);
 
             }
         });
@@ -95,6 +84,12 @@ public class ResultsActivity extends AppCompatActivity {
     private void buildList(){
 
     }
+
+    /**
+     * creates arraylist that can be used to populate gridview
+     * @param searchPhrase
+     * @throws IOException
+     */
     private void createBooks(String searchPhrase) throws IOException {
         //searchPhrase = "lord+of+the+flies";
         bookList = new LinkedList<BookResult>();
@@ -129,12 +124,47 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * searches books from the radford library catalog.
+     * uses a secondary thread running concurrently with the main activity thread.
+     * improves search speed significantly.
+     * @param input search-ready String input from user.
+     */
+    private void search(final String input) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    createBooks(input);
+                    ArrayList<String> bookTitles = new ArrayList<String>();
+                    int index = 0;
+                    for (BookResult book : bookList) {
+                        bookTitles.add(book.getName());
+                        System.out.println(book.getImgURL());
+                    }
+                    ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * removes all none alphanumeric chars, and also replaces spaces with '+' char
+     * @param input standard user input
+     * @return search-ready string with only alphanumeric values and spaces replaced with '+"s
+     */
     private String sanitizeInput(String input){
         String output = input.replaceAll("[^A-Za-z0-9 ]", "");;
         output = output.trim();
         output = output.replaceAll("\\s+", "+");
         return output;
     }
+
+    /**
+     * this inner class is used for populating the GridView in activity_results.xml
+     */
     private static final class GridAdapter extends BaseAdapter {
 
         final ArrayList<String> mItems;
