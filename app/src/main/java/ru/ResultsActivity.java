@@ -139,7 +139,7 @@ public class ResultsActivity extends AppCompatActivity {
                     int index = 0;
                     for (BookResult book : bookList) {
                         bookTitles.add(book.getName());
-                        System.out.println(book.getImgURL());
+                        //System.out.println(book.getImgURL());
                     }
                     ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
                 } catch (IOException e) {
