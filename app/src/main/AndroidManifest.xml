@@ -5,12 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-<<<<<<< HEAD
-=======
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
->>>>>>> origin/master
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,18 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.RegisterActivity" />
         <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.UserAreaActivity" />
         <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SearchHomeActivity" />
         <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.ResultsActivity" />
-=======
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".UserAreaActivity" />
-        <activity android:name=".SearchHomeActivity" />
-        <activity android:name=".ResultsActivity" />
-        <activity android:name=".SettingsActivity"></activity>
->>>>>>> origin/master
     </application>
 
 </manifest>
