@@ -1,4 +1,4 @@
-package ru;
+package com.weebly.httplexiconindustries.ru.JavaActivities;
 
 
 
@@ -19,17 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.weebly.httplexiconindustries.ru.ContentParsing.BookResult;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Scanner;
+
+import ActivityPackages.R;
+
 @SuppressWarnings("ALL")
 public class ResultsActivity extends AppCompatActivity {
 

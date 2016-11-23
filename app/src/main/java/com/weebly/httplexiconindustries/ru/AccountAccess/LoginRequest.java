@@ -1,4 +1,4 @@
-package ru;
+package com.weebly.httplexiconindustries.ru.AccountAccess;
 
 /**
  * Created by Sam on 11/8/2016.

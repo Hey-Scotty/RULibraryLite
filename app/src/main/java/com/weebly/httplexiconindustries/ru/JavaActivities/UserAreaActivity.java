@@ -1,10 +1,12 @@
-package ru;
+package com.weebly.httplexiconindustries.ru.JavaActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import ActivityPackages.R;
 
  /*
  Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV

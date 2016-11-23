@@ -9,7 +9,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.weebly.httplexiconindustries.ru.RegisterActivity">
+    tools:context="com.weebly.httplexiconindustries.ru.JavaActivities.RegisterActivity">
 
     <ImageView
         android:layout_width="match_parent"
