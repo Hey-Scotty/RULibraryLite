@@ -11,17 +11,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.LoginActivity">
+
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.LoginActivity" />
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.RegisterActivity" />
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.UserAreaActivity" />
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.ResultsActivity" />
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.RegisterActivity" />
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.UserAreaActivity" />
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SearchHomeActivity" />
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.ResultsActivity" />
     </application>
 
 </manifest>

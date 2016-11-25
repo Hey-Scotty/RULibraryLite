@@ -3,6 +3,7 @@ package com.weebly.httplexiconindustries.ru.JavaActivities;
 
 
 import android.os.StrictMode;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -34,7 +35,6 @@ import ActivityPackages.R;
 
 @SuppressWarnings("ALL")
 public class ResultsActivity extends AppCompatActivity {
-
     private TextView textOut;
     private EditText searchField;
     private String sanitizedSearch;
@@ -43,6 +43,7 @@ public class ResultsActivity extends AppCompatActivity {
             + "databaseList=283&queryString=";
     private LinkedList<BookResult> bookList = new LinkedList<BookResult>();
     private static final int ROW_ITEMS = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,24 +53,15 @@ public class ResultsActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        //textOut = (TextView) findViewById(R.id.resultsField);
-        searchField = (EditText) findViewById(R.id.searchField);
 
+        searchField = (EditText) findViewById(R.id.searchField);
         resultsGrid = (GridView) findViewById(R.id.resultsGrid);
         Button search = (Button) findViewById(R.id.GoButton);
         search.setOnClickListener(new View.OnClickListener() {
 
-
-
             public void onClick(View v){
                 sanitizedSearch = sanitizeInput(searchField.getText().toString());
                 search(sanitizedSearch);
-
-                //String searchOutput = pullSearchInfo(sanitizedSearch);
-                //Editable output = new SpannableStringBuilder(searchOutput);
-                //textOut.setText(getInput.getText(output));
-                //textOut.setText(output);
-
             }
         });
         resultsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener()
