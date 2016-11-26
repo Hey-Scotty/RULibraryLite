@@ -108,7 +108,8 @@ public class ResultsActivity extends AppCompatActivity {
             if (el.attr("src").substring(0, 2).equals("//")) {
                 //each image occured twice this is to prevent duplicate images being added
                 if(removeDoop%2 == 0){
-                    String imgURL = el.attr("src").trim().substring(0,57);
+                    String imgURL = snipImgSrc(el.attr("src").trim());
+
                      bookList.get(counter).setImgURL(imgURL);
                     counter++;
                 }
@@ -142,6 +143,18 @@ public class ResultsActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private static String snipImgSrc(String input){
+        String output = input;
+        for(int i = 0; i < input.length(); i++){
+            if(i > 2){
+                if(input.substring(i, i+3).equals("jpg")){
+                    output = "https:" + input.substring(0, i+3);
+                    break;
+                }
+            }
+        }
+        return output;
     }
 
     /**
