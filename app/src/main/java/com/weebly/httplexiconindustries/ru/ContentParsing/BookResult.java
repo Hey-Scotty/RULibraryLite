@@ -1,4 +1,4 @@
-package ru;
+package com.weebly.httplexiconindustries.ru.ContentParsing;
 
 import android.graphics.drawable.Drawable;
 

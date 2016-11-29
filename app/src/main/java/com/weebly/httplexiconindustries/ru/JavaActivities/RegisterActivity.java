@@ -1,4 +1,4 @@
-package ru;
+package com.weebly.httplexiconindustries.ru.JavaActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,14 @@ import android.widget.EditText;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.weebly.httplexiconindustries.ru.AccountAccess.RegisterRequest;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import ActivityPackages.R;
+
 /*
 Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV
  */

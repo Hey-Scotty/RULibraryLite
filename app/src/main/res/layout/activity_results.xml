@@ -4,75 +4,40 @@
     android:id="@+id/activity_results"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ResultsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.weebly.httplexiconindustries.ru.JavaActivities.ResultsActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:id="@+id/searchField"
-        android:hint="search"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/GoButton"
-        android:layout_toStartOf="@+id/GoButton" />
+        <GridView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:id="@+id/resultsGrid"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/floating_search_view" />
 
-    <View
-        android:id="@+id/underline"
-        android:layout_height="1dp"
-        android:background="#808080"
-        android:layout_below="@+id/searchField"
-        android:layout_alignParentStart="true"
-        android:layout_width="290dp"
-        android:layout_toLeftOf="@+id/GoButton"
-        android:layout_toStartOf="@+id/GoButton"
-        android:layout_alignParentLeft="true" />
 
-    <Button
-        android:text="go"
-        android:layout_width="60dp"
-        android:id="@+id/GoButton"
-        android:layout_height="45dp"
-        android:layout_above="@+id/underline"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:text="Search Results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/GoButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/srLabel"
-        android:textSize="17sp" />
+        <com.arlib.floatingsearchview.FloatingSearchView
+            android:id="@+id/floating_search_view"
+            android:layout_width="match_parent"
+            app:floatingSearch_searchHint="Search..."
+            app:floatingSearch_suggestionsListAnimDuration="250"
+            app:floatingSearch_showSearchKey="true"
+            app:floatingSearch_leftActionMode="showSearch"
+            app:floatingSearch_menu="@menu/navmenu"
+            app:showAsAction="always"
 
-    <GridView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:columnWidth="90dp"
-        android:numColumns="2"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:id="@+id/resultsGrid"
-        android:layout_below="@+id/srLabel" />
+            app:floatingSearch_close_search_on_keyboard_dismiss="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_height="60dp" />
 
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
 
-    </RelativeLayout>
+
+
 </RelativeLayout>
