@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SelectedBook" />
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SettingsActivity"></activity>
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SettingsActivity" />
+        <activity android:name="tinietdev.rulibrarylite.Book_Info"></activity>
     </application>
 
 </manifest>
