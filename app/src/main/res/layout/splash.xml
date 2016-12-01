@@ -19,5 +19,6 @@
         app:srcCompat="@drawable/lexiconlogo"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView3" />
+        android:id="@+id/imageView3"
+        android:contentDescription="@string/lexicon_industries_logo" />
 </RelativeLayout>
