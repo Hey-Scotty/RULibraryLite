@@ -1,5 +1,7 @@
 package com.weebly.httplexiconindustries.ru.JavaActivities;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,17 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.weebly.httplexiconindustries.ru.ContentParsing.BookResult;
+import com.weebly.httplexiconindustries.ru.ContentParsing.ParseAlot;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,6 +43,7 @@ public class ResultsActivity extends AppCompatActivity {
     private int fromYearSelected = 0;
     private LinkedList<BookResult> bookList = new LinkedList<BookResult>();
     private static final int ROW_ITEMS = 2;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class ResultsActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         searchField = (FloatingSearchView) findViewById(R.id.floating_search_view);
         searchField.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
@@ -100,6 +103,7 @@ public class ResultsActivity extends AppCompatActivity {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mSpinner.setAdapter(adapter);
                     mSpinner.setSelection(fromYearSelected);
+                    mSpinner.getSelectedItem();
 
                     mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -148,29 +152,8 @@ public class ResultsActivity extends AppCompatActivity {
         //searchPhrase = "lord+of+the+flies";
         String searchURL = "https://radforduniversity.on.worldcat.org/search?"
                 + "databaseList=283&queryString=";
-        bookList = new LinkedList<BookResult>();
-        Document doc;
-        doc = Jsoup.connect(searchURL + searchPhrase).timeout(60000).get();
-        Elements title = doc.getElementsByClass("record-title");
-        int check = 0;
-        for (Element titles : title) {
-            String text = titles.ownText();
-            BookResult temp = new BookResult(text);
-            bookList.add(temp);
-            check++;
-        }
-        Elements img = doc.getElementsByTag("img");
-        int counter = 0;
-        int removeDoop = 0;
-        // Loop through img tags
-        for (Element el : img) {
-            if (el.attr("src").substring(0, 2).equals("//") && removeDoop%2 == 0) {
-                String imgURL = snipImgSrc(el.attr("src").trim());
-                bookList.get(counter).setImgURL(imgURL);
-                counter++;
-                removeDoop++;
-            }
-        }
+        ParseAlot largerList = new ParseAlot(searchURL + searchPhrase);
+        bookList = largerList.getBookList();
 
     }
     private void addSearch(){
@@ -180,8 +163,9 @@ public class ResultsActivity extends AppCompatActivity {
             @Override
             public void onSearchAction(String query) {
                 sanitizedSearch = sanitizeInput(query);
-                System.out.println(query);
-                search(sanitizedSearch);
+                //System.out.println(query);
+
+                new DownloadFilesTask().execute(sanitizedSearch);
             }
         });
     }
@@ -191,25 +175,7 @@ public class ResultsActivity extends AppCompatActivity {
      * improves search speed significantly.
      * @param input search-ready String input from user.
      */
-    private void search(final String input) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    createBooks(input);
-                    ArrayList<String> bookTitles = new ArrayList<String>();
-                    int index = 0;
-                    for (BookResult book : bookList) {
-                        bookTitles.add(book.getName());
-                        System.out.println(book.getName());
-                    }
-                    ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        });
-    }
     private String snipImgSrc(String input){
         String output = input;
         for(int i = 0; i < input.length(); i++){
@@ -234,7 +200,36 @@ public class ResultsActivity extends AppCompatActivity {
         output = output.replaceAll("\\s+", "+");
         return output;
     }
+    private class DownloadFilesTask extends AsyncTask<String, Void ,  Void> {
+        ProgressDialog dialog;
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(ResultsActivity.this,"","Loading. Please wait...", true);
+        }
+        @Override
+        protected Void doInBackground(String... strings) {
+            String input = strings[0];
+            try {
+                createBooks(input);
+                publishProgress();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
 
+            ArrayList<String> bookTitles = new ArrayList<String>();
+            int index = 0;
+            for (BookResult book : bookList) {
+                bookTitles.add(book.getName());
+                System.out.println(book.getName());
+            }
+            ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
+        }
+
+    }
     /**
      * this inner class is used for populating the GridView in activity_results.xml
      */

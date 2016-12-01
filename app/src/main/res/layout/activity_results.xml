@@ -7,20 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.weebly.httplexiconindustries.ru.JavaActivities.ResultsActivity">
 
-        <GridView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:numColumns="2"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"
-            android:id="@+id/resultsGrid"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/floating_search_view" />
-
-
 
         <com.arlib.floatingsearchview.FloatingSearchView
             android:id="@+id/floating_search_view"
@@ -35,9 +21,23 @@
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_height="60dp" />
+            android:layout_height="60dp" >
 
+        </com.arlib.floatingsearchview.FloatingSearchView>
 
+        <GridView
+            android:layout_width="fill_parent"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:id="@+id/resultsGrid"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/floating_search_view" />
 
 
 </RelativeLayout>
