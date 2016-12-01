@@ -53,7 +53,6 @@ public class ResultsActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         searchField = (FloatingSearchView) findViewById(R.id.floating_search_view);
         searchField.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override

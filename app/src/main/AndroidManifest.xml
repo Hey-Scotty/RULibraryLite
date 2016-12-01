@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SelectedBook"></activity>
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SelectedBook" />
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SettingsActivity"></activity>
     </application>
 
 </manifest>

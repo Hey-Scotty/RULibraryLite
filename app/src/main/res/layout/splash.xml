@@ -13,4 +13,11 @@
     tools:context="com.weebly.httplexiconindustries.ru.JavaActivities.SplashActivity">
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/lexiconlogo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView3" />
 </RelativeLayout>
