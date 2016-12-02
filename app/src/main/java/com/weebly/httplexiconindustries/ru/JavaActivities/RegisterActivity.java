@@ -22,12 +22,20 @@ import ActivityPackages.R;
 /*
 Created by Sam Harrison on 11/7/2016 with help from the tutorial provided by Tonikami TV
  */
+
 public class RegisterActivity extends AppCompatActivity {
+
+    boolean verified;
+
+    public RegisterActivity(){
+        boolean verified = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
 
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
@@ -46,25 +54,27 @@ public class RegisterActivity extends AppCompatActivity {
                 final String name = etName.getText().toString();
                 final String email = etEmail.getText().toString();
 
+
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-
-                            if(etUsername.getText().toString().trim().equals("") || etName.getText().toString().trim().equals("") || etEmail.getText().toString().trim().equals("") || etPassword.getText().toString().trim().equals("") || etConfirmPassword.getText().toString().trim().equals("")){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("One or More Text Fields are Empty.")
-                                        .setNegativeButton("Try Again", null)
-                                        .create()
-                                        .show();
-                            }
-                            else {
-                                if (password.equals(cPassword)) {
+                            if (password.equals(cPassword)) {
+                                if(etUsername.getText().toString().trim().equals("") || etName.getText().toString().trim().equals("") || etEmail.getText().toString().trim().equals("") || etPassword.getText().toString().trim().equals("")){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                    builder.setMessage("One or More Text Fields are Empty.")
+                                            .setNegativeButton("Try Again", null)
+                                            .create()
+                                            .show();
+                                }
+                                else {
                                     if (success) {
                                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                         RegisterActivity.this.startActivity(intent);
+                                        setSuccess(true);
+
                                     } else {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                         builder.setMessage("Register Failed.")
@@ -72,24 +82,41 @@ public class RegisterActivity extends AppCompatActivity {
                                                 .create()
                                                 .show();
                                     }
-                                } else {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                    builder.setMessage("Passwords Do Not Match.")
-                                            .setNegativeButton("Try Again", null)
-                                            .create()
-                                            .show();
                                 }
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("Passwords Do Not Match.")
+                                        .setNegativeButton("Try Again", null)
+                                        .create()
+                                        .show();
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 };
-
-                RegisterRequest registerRequest = new RegisterRequest(username, password, name, email, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(registerRequest);
+                if(etUsername.getText().toString().trim().equals("") || etName.getText().toString().trim().equals("") || etEmail.getText().toString().trim().equals("") || etPassword.getText().toString().trim().equals("")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("One or More Text Fields are Empty.")
+                            .setNegativeButton("Try Again", null)
+                            .create()
+                            .show();
+                }
+                else {
+                    RegisterRequest registerRequest = new RegisterRequest(username, password, name, email, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                    queue.add(registerRequest);
+                }
             }
         });
+    }
+
+    public void setSuccess(boolean b){
+        verified = b;
+    }
+
+    public boolean getSuccess(){
+        return verified;
     }
 }
