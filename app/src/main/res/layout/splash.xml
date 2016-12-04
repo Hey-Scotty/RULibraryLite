@@ -15,6 +15,7 @@
 
     <ImageView
         app:srcCompat="@drawable/lexiconlogo"
+<<<<<<< HEAD
         android:id="@+id/imageView3"
         android:contentDescription="@string/lexicon_industries_logo"
         android:layout_width="120dp"
@@ -22,4 +23,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="142dp" />
+=======
+        android:id="@+id/imageView8"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+>>>>>>> master
 </RelativeLayout>

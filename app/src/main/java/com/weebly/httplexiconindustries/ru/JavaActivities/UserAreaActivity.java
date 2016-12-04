@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import ActivityPackages.R;
 
  /*
@@ -22,17 +24,17 @@ public class UserAreaActivity extends AppCompatActivity {
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etName = (EditText) findViewById(R.id.etName);
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
+        final TextView ID = (TextView) findViewById(R.id.tvUserID);
         final TextView welcome = (TextView) findViewById(R.id.tvWelcome);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
+        //String name = intent.getStringExtra("name");
         String username = intent.getStringExtra("username");
-        String email = intent.getStringExtra("email");
+        String userID = intent.getStringExtra("userID");
+        //String email = intent.getStringExtra("email");
 
-        String msg = "Welcome, " + name + "!";
+        String msg = "Welcome, " + username + "!";
+        ID.setText((userID));
         welcome.setText(msg);
-        etUsername.setText(username);
-        etName.setText(name);
-        etEmail.setText(email);
     }
 }
