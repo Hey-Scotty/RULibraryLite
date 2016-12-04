@@ -1,21 +1,20 @@
 package com.weebly.httplexiconindustries.ru.JavaActivities;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,27 +22,37 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.weebly.httplexiconindustries.ru.ContentParsing.BookResult;
 import com.weebly.httplexiconindustries.ru.ContentParsing.ParseAlot;
-
+import com.weebly.httplexiconindustries.ru.HelperPackage.GridAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-
-
 import ActivityPackages.R;
 
 @SuppressWarnings("ALL")
 public class ResultsActivity extends AppCompatActivity {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //CLASS INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     private FloatingSearchView searchField;
     private TextView textOut;
     private String sanitizedSearch;
     private GridView resultsGrid;
     private String toYear, fromYear;
-    private int toYearSelected = 0;
-    private int fromYearSelected = 0;
+    private int toYearPosition = 0;
+    private int fromYearPosition = 0;
+    private int litTypePosition = 0;
+    private final String litTypeVal[] = {"&format=Book","&subformat=Book::book_printbook",
+            "&subformat=Book::book_digital", "&format=Jrnl","&format=Video", "&format=Music"};
     private LinkedList<BookResult> bookList = new LinkedList<BookResult>();
     private static final int ROW_ITEMS = 2;
-    private ProgressBar progressBar;
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //END OF CLASS INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * required on intial startUp of this activity Object
+     * @param savedInstanceState currently not used fully, can be used to set the activity to a
+     *                           previous instance such as a previous search
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,82 +62,9 @@ public class ResultsActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        searchField = (FloatingSearchView) findViewById(R.id.floating_search_view);
-        searchField.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.to_spinner) {
-                    System.out.println("to spinner selected");
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
-                    mBuilder.setTitle("choose a ending date below");
-                    final Spinner mSpinner = (Spinner) mView.findViewById(R.id.yearspinner);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ResultsActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            getResources().getStringArray(R.array.test_list));
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mSpinner.setAdapter(adapter);
-                    mSpinner.setSelection(toYearSelected);
 
-                    mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
-                            toYear = mSpinner.getSelectedItem().toString();
-
-                            toYearSelected = (mSpinner.getSelectedItemPosition());
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    mBuilder.setView(mView);
-                    AlertDialog dialog = mBuilder.create();
-                    dialog.show();
-
-                }
-                if (item.getItemId() == R.id.from_spinner) {
-                    System.out.println("from spinner selected");
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
-                    mBuilder.setTitle("choose a starting date below");
-                    final Spinner mSpinner = (Spinner) mView.findViewById(R.id.yearspinner);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ResultsActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            getResources().getStringArray(R.array.test_list));
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mSpinner.setAdapter(adapter);
-                    mSpinner.setSelection(fromYearSelected);
-                    mSpinner.getSelectedItem();
-
-                    mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
-                            fromYear = mSpinner.getSelectedItem().toString();
-                            fromYearSelected = (mSpinner.getSelectedItemPosition());
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    mBuilder.setView(mView);
-                    AlertDialog dialog = mBuilder.create();
-                    dialog.show();
-                }
-
-
-            }
-        });
-
+        addSearchListeners();
         resultsGrid = (GridView) findViewById(R.id.resultsGrid);
-        addSearch();
         resultsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent,
@@ -137,57 +73,176 @@ public class ResultsActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(),
                         "pic" + (position + 1) + " selected",
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ResultsActivity.this, SelectedBookActivity.class);
+                startActivity(intent);
             }
         });
     }
 
 
+
+    /**
+     * if the From Year button is pressed in the search refinement menu it
+     * opens dialog menu with spinner choices of years for user
+     * @param item item determines which button is pressed
+     *             in this case the item is the From Spinner
+     */
+    private void authorButtonPressed(MenuItem item){
+        if(item.getItemId() == R.id.lit_type_spinner) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+            mBuilder.setTitle("choose your type of media below");
+            final Spinner mSpinner = (Spinner) mView.findViewById(R.id.yearspinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ResultsActivity.this,
+                    android.R.layout.simple_spinner_item,
+                    getResources().getStringArray(R.array.lit_type_list));
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setSelection(litTypePosition);
+            mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    litTypePosition = (mSpinner.getSelectedItemPosition());
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setView(mView);
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
+        }
+    }
+    private void fromYearButtonPress(MenuItem item){
+        if (item.getItemId() == R.id.from_spinner) {
+            System.out.println("from spinner selected");
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+            mBuilder.setTitle("choose a starting date below");
+            final Spinner mSpinner = (Spinner) mView.findViewById(R.id.yearspinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ResultsActivity.this,
+                    android.R.layout.simple_spinner_item,
+                    getResources().getStringArray(R.array.year_string_list));
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setSelection(fromYearPosition);
+            mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    fromYear = mSpinner.getSelectedItem().toString().trim();
+                    fromYearPosition = (mSpinner.getSelectedItemPosition());
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setView(mView);
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
+        }
+    }
+    /**
+     * if the To Year button is pressed in the search refinement menu it
+     * opens dialog menu with spinner choices of years for user
+     * @param item item determines which button is pressed
+     *             in this case the item is the To Spinner
+     */
+    private void toYearButtonPress(MenuItem item){
+        if (item.getItemId() == R.id.to_spinner) {
+            final MenuItem toSpinButton = (MenuItem) findViewById(R.id.to_spinner);
+            System.out.println("to spinner selected");
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+            mBuilder.setTitle("choose a ending date below");
+            final Spinner mSpinner = (Spinner) mView.findViewById(R.id.yearspinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ResultsActivity.this,
+                    android.R.layout.simple_spinner_item,
+                    getResources().getStringArray(R.array.year_string_list));
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setSelection(toYearPosition);
+
+            mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    toYear = mSpinner.getSelectedItem().toString().trim();
+                    toYearPosition = (mSpinner.getSelectedItemPosition());
+                    //toSpinButton.setTitle("Year To: " + toYear);
+                    //change the string xml instead of the value directly
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i){
+                    dialogInterface.dismiss();
+                }
+            });
+            mBuilder.setView(mView);
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
+        }
+    }
     /**
      * creates arraylist that can be used to populate gridview
      * @param searchPhrase
      * @throws IOException
      */
     private void createBooks(String searchPhrase) throws IOException {
-        //searchPhrase = "lord+of+the+flies";
+        String completeURL = "";
         String searchURL = "https://radforduniversity.on.worldcat.org/search?"
                 + "databaseList=283&queryString=";
-        ParseAlot largerList = new ParseAlot(searchURL + searchPhrase);
-        bookList = largerList.getBookList();
+        completeURL = searchURL+ searchPhrase;
+        System.out.println("to year position" + toYearPosition);
+        System.out.println( "from year position" + fromYearPosition);
+        if(fromYearPosition != 0 && toYearPosition != 0) {
+                completeURL += "&sortKey=SEARCH_RELEVANCE&scope=wz:1916&year=" + fromYear +
+                        ".." + toYear;
+        }
+        //adds the literature type chosen by user to the search query
+        else if(litTypePosition != 0){
+            completeURL += litTypeVal[litTypePosition - 1];
+        }
+
+        completeURL += "&page=1";
+        System.out.println("URL Before sent to parse Object"+completeURL);
+        ParseAlot parseObj = new ParseAlot();
+        bookList = parseObj.parse(completeURL);
 
     }
-    private void addSearch(){
+
+    /**
+     * adds search Listener to The searchField variable including the menu buttons on the right side
+     */
+    private void addSearchListeners(){
+        searchField = (FloatingSearchView) findViewById(R.id.floating_search_view);
+        searchField.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(MenuItem item) {
+                toYearButtonPress(item);
+                fromYearButtonPress(item);
+                authorButtonPressed(item);
+
+            }
+        });
         this.searchField.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
             public void onSuggestionClicked(SearchSuggestion searchSuggestion) {}
             @Override
             public void onSearchAction(String query) {
                 sanitizedSearch = sanitizeInput(query);
-                //System.out.println(query);
-
                 new DownloadFilesTask().execute(sanitizedSearch);
             }
         });
     }
-    /**
-     * searches books from the radford library catalog.
-     * uses a secondary thread running concurrently with the main activity thread.
-     * improves search speed significantly.
-     * @param input search-ready String input from user.
-     */
-
-    private String snipImgSrc(String input){
-        String output = input;
-        for(int i = 0; i < input.length(); i++){
-            if(i > 2){
-                if(input.substring(i, i+3).equals("jpg")){
-                    output = "https:" + input.substring(0, i+3);
-                    break;
-                }
-            }
-        }
-        return output;
-    }
-
     /**
      * removes all none alphanumeric chars, and also replaces spaces with '+' char
      * @param input standard user input
@@ -199,91 +254,52 @@ public class ResultsActivity extends AppCompatActivity {
         output = output.replaceAll("\\s+", "+");
         return output;
     }
+
+    /**
+     * This inner class offloads the searching to a seperate thread from the main UI thread
+     * see AsyncTask Documentation on the Android Studio Webpage from info on the parameters and
+     * syntax of this inner class
+     */
     private class DownloadFilesTask extends AsyncTask<String, Void ,  Void> {
         ProgressDialog dialog;
+
+        /**
+         * before the serchBegins this method is called, putting a loading dialog message over the
+         * activity, this is used to inform the user when the search has began and is closed once
+         * the search has finished in the onPostExecute method below
+         */
         protected void onPreExecute() {
             dialog = ProgressDialog.show(ResultsActivity.this,"","Loading. Please wait...", true);
         }
         @Override
+        /**
+         * main bulkwork takes place here, calls the createBooks method which creates a BookResult
+         * ArrayList which in-turn is used to instantiate the bookList Object
+         */
         protected Void doInBackground(String... strings) {
             String input = strings[0];
             try {
+
                 createBooks(input);
-                publishProgress();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            catch (IOException e) {e.printStackTrace();}
             return null;
         }
+
+        /**
+         * once the bookList has been instantiated this method is executed, calling the gridAdapter
+         * class to create the grid representation of the book list in this Results Activity
+         * @param result
+         */
         @Override
         protected void onPostExecute(Void result) {
             dialog.dismiss();
+            GridAdapter gridObj = new GridAdapter(ResultsActivity.this,bookList);
+            ResultsActivity.this.resultsGrid.setAdapter(gridObj);
 
-            ArrayList<String> bookTitles = new ArrayList<String>();
-            int index = 0;
-            for (BookResult book : bookList) {
-                bookTitles.add(book.getName());
-                System.out.println(book.getName());
-            }
-            ResultsActivity.this.resultsGrid.setAdapter(new GridAdapter(bookTitles));
+
         }
 
     }
-    /**
-     * this inner class is used for populating the GridView in activity_results.xml
-     */
-    private static final class GridAdapter extends BaseAdapter {
 
-        final ArrayList<String> mItems;
-        final int mCount;
-        /**
-         * Default constructor
-         * @param items to fill data to
-         */
-        private GridAdapter(final ArrayList<String> items) {
-
-            mCount = items.size();
-            mItems = new ArrayList<String>(mCount);
-
-            // for small size of items it's ok to do it here, sync way
-            for (String item : items) {
-                // get separate string parts, divided by ,
-                final String[] parts = item.split(",");
-
-                // remove spaces from parts
-                for (String part : parts) {
-                    part.replace(" ", "");
-                    mItems.add(part);
-                }
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mCount;
-        }
-
-        @Override
-        public Object getItem(final int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public long getItemId(final int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, final View convertView, final ViewGroup parent) {
-            View view = convertView;
-            if (view == null) {
-                view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-            }
-            final TextView text = (TextView) view.findViewById(android.R.id.text1);
-            text.setText(mItems.get(position));
-            text.setTextSize(10);
-
-            return view;
-        }
-    }
 }

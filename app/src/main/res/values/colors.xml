@@ -3,4 +3,10 @@
     <color name="colorPrimary">#F44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#E57373</color>
+    <integer-array name="custom_theme">
+    <item>@color/colorPrimaryDark</item> <!-- really much darker color of main color -->
+    <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+    <item>@color/colorPrimary</item> <!-- main color of your theme -->
+    <item>@color/colorAccent</item> <!-- really much lighter color of main color -->
+</integer-array>
 </resources>

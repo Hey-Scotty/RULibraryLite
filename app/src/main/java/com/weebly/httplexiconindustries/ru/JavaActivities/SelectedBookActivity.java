@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import ActivityPackages.R;
 
-public class SelectedBook extends AppCompatActivity {
+public class SelectedBookActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

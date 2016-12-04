@@ -22,9 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SelectedBook" />
-        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SettingsActivity" />
-        <activity android:name="tinietdev.rulibrarylite.Book_Info"></activity>
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SelectedBookActivity" />
+
+        <activity android:name="com.weebly.httplexiconindustries.ru.JavaActivities.SettingsActivity"></activity>
+
     </application>
 
 </manifest>

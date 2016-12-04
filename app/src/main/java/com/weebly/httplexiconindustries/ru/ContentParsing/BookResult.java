@@ -10,37 +10,25 @@ import java.net.URL;
  */
 
 public class BookResult {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //CLASS INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     private String name;
     private String imgURL;
-    private Drawable coverArt;
-    public BookResult(String _name){
-        setName(_name);
-        imgURL = "";
-        coverArt = null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    private static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String bookURL;
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //END OF CLASS INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @return the imgURL
+     * Class Constructor instantiates the book chosen by user
+     * @param _name
      */
-    public String getImgURL() {
-        return imgURL;
+    public BookResult(String _name, String _bookURL) {
+        name = _name;
+        bookURL = _bookURL;
+        imgURL = "";
+
     }
 
     /**
@@ -49,6 +37,33 @@ public class BookResult {
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
     }
+    /**
+     * @param bookURL the bookURL to set
+     */
+    public void setBookURL(String bookURL){this.bookURL = bookURL;}
+    /**
+     * gets the name attribute in this class
+     * @return ame
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * gets the imgURL Attribute
+     * @return imgURL
+     */
+    public String getImgURL() {return imgURL;}
+
+    /**
+     * gets the imgURL Attribute
+     * @return imgURL
+     */
+    public String getBookURL(){ return bookURL; }
+    /**
+     * this class returns a String representation of this class's attributes
+     * @return output: a String representation of this class's attributes
+     */
     public String toString(){
         String output = "";
         output += this.name + "\n";
@@ -56,11 +71,4 @@ public class BookResult {
         return output;
     }
 
-    public Drawable getCoverArt() {
-        return coverArt;
-    }
-
-    public void setCoverArt() {
-        this.coverArt = LoadImageFromWebOperations(this.imgURL);
-    }
 }
