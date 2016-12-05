@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_user_area"
     android:layout_width="match_parent"
@@ -21,71 +20,59 @@
         tools:text="Welcome" />
 
     <TextView
-        android:text="______________________________________________________"
+        android:text="Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFavorites"
+        android:layout_below="@+id/tvWelcome"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/Divider" />
+        android:id="@+id/tvUsername" />
 
     <TextView
-        android:text="Favorites"
+        android:text="Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvFavorites"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/tvSettings"
-        android:layout_alignLeft="@+id/tvSettings"
-        android:layout_alignStart="@+id/tvSettings" />
+        android:layout_below="@+id/etUsername"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvName" />
 
-    <TextView
-        android:text="Settings"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvSettings"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:layout_toRightOf="@+id/imageView6"
-        android:layout_toEndOf="@+id/imageView6"
-        android:layout_below="@+id/tvWelcome" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/smallsettingslogo"
-        android:id="@+id/imageView6"
-        android:layout_above="@+id/tvFavorites"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etUsername"
+        android:layout_below="@+id/tvUsername"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ImageView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/favoritesmall"
-        android:id="@+id/imageView7"
-        android:layout_above="@+id/Divider"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etName"
+        android:layout_below="@+id/tvName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="User ID:"
+        android:text="Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageView7"
-        android:layout_toRightOf="@+id/tvWelcome"
-        android:layout_toEndOf="@+id/tvWelcome"
-        android:id="@+id/textView6" />
+        android:id="@+id/tvEmail"
+        android:layout_below="@+id/etName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="Not Working"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView6"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:id="@+id/tvUserID" />
-
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etEmail"
+        android:layout_below="@+id/tvEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
