@@ -30,7 +30,6 @@ public class UserAreaActivity extends AppCompatActivity {
         String email = intent.getStringExtra("email");
 
         String msg = "Welcome, " + name + "!";
-        welcome.setText(msg);
         etUsername.setText(username);
         etName.setText(name);
         etEmail.setText(email);
