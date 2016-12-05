@@ -1,7 +1,5 @@
 package com.weebly.httplexiconindustries.ru.JavaActivities;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,34 +7,35 @@ import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.weebly.httplexiconindustries.ru.ContentParsing.BookData;
 import com.weebly.httplexiconindustries.ru.ContentParsing.BookResult;
 import com.weebly.httplexiconindustries.ru.ContentParsing.ParseAlot;
 import com.weebly.httplexiconindustries.ru.HelperPackage.GridAdapter;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import ActivityPackages.R;
 
-@SuppressWarnings("ALL")
+/**
+ * Results Activity is used to Search the entirety of the Radford University McConnell Library
+ * Database for books and other forms of media held at the universities library
+ */
 public class ResultsActivity extends AppCompatActivity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //CLASS INSTANCE VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private FloatingSearchView searchField;
-    private TextView textOut;
     private String sanitizedSearch;
     private GridView resultsGrid;
+    MenuItem litButton,yearToButton,yearFromButton;
     private String toYear, fromYear;
     private int toYearPosition = 0;
     private int fromYearPosition = 0;
@@ -57,23 +56,30 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
 
+
+        yearFromButton = (MenuItem) findViewById(R.id.from_spinner);
+
         addSearchListeners();
+        System.out.println(litButton);
         resultsGrid = (GridView) findViewById(R.id.resultsGrid);
         resultsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent,
-                                    View v, int position, long id)
-            {
+                                    View v, int position, long id) {
                 Toast.makeText(getBaseContext(),
                         "pic" + (position + 1) + " selected",
                         Toast.LENGTH_SHORT).show();
+                System.out.println(bookList.get(position).getName());
+                BookData bookData = new BookData();
+                try {bookData = new BookData(bookList.get(position));}
+                catch (IOException e) {e.printStackTrace();}
                 Intent intent = new Intent(ResultsActivity.this, SelectedBookActivity.class);
+                intent.putExtra("bookData",bookData);
                 startActivity(intent);
             }
         });
@@ -82,12 +88,13 @@ public class ResultsActivity extends AppCompatActivity {
 
 
     /**
-     * if the From Year button is pressed in the search refinement menu it
-     * opens dialog menu with spinner choices of years for user
+     * if the Literature Type button is pressed in the search refinement menu it
+     * opens dialog menu with spinner choices of literature type for user
      * @param item item determines which button is pressed
      *             in this case the item is the From Spinner
      */
-    private void authorButtonPressed(MenuItem item){
+    private void litButtonPressed(final MenuItem item){
+        litButton = (MenuItem) findViewById(R.id.lit_type_spinner);
         if(item.getItemId() == R.id.lit_type_spinner) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
             View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
@@ -103,7 +110,11 @@ public class ResultsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i){
                     litTypePosition = (mSpinner.getSelectedItemPosition());
+                    if(mSpinner.getSelectedItemPosition() != 0)
+                        item.setTitle(mSpinner.getSelectedItem().toString());
                     dialogInterface.dismiss();
+                    if(mSpinner.getSelectedItemPosition() == 0)
+                        item.setTitle("Literature Type");
                 }
             });
             mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
@@ -117,7 +128,13 @@ public class ResultsActivity extends AppCompatActivity {
             dialog.show();
         }
     }
-    private void fromYearButtonPress(MenuItem item){
+    /**
+     * if the From Year button is pressed in the search refinement menu it
+     * opens dialog menu with spinner choices of years for user
+     * @param item item determines which button is pressed
+     *             in this case the item is the From Spinner
+     */
+    private void fromYearButtonPress(final MenuItem item){
         if (item.getItemId() == R.id.from_spinner) {
             System.out.println("from spinner selected");
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(ResultsActivity.this);
@@ -135,6 +152,10 @@ public class ResultsActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i){
                     fromYear = mSpinner.getSelectedItem().toString().trim();
                     fromYearPosition = (mSpinner.getSelectedItemPosition());
+                    if(mSpinner.getSelectedItemPosition() != 0)
+                        item.setTitle("From " + fromYear);
+                    if(mSpinner.getSelectedItemPosition() == 0)
+                        item.setTitle("Year From");
                     dialogInterface.dismiss();
                 }
             });
@@ -155,7 +176,7 @@ public class ResultsActivity extends AppCompatActivity {
      * @param item item determines which button is pressed
      *             in this case the item is the To Spinner
      */
-    private void toYearButtonPress(MenuItem item){
+    private void toYearButtonPress(final MenuItem item){
         if (item.getItemId() == R.id.to_spinner) {
             final MenuItem toSpinButton = (MenuItem) findViewById(R.id.to_spinner);
             System.out.println("to spinner selected");
@@ -175,8 +196,12 @@ public class ResultsActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i){
                     toYear = mSpinner.getSelectedItem().toString().trim();
                     toYearPosition = (mSpinner.getSelectedItemPosition());
+                    item.setChecked(true);
+                    if(mSpinner.getSelectedItemPosition() != 0)
+                        item.setTitle("To " + toYear);
+                    if(mSpinner.getSelectedItemPosition() == 0)
+                        item.setTitle("Year To");
                     //toSpinButton.setTitle("Year To: " + toYear);
-                    //change the string xml instead of the value directly
                     dialogInterface.dismiss();
                 }
             });
@@ -229,7 +254,7 @@ public class ResultsActivity extends AppCompatActivity {
             public void onActionMenuItemSelected(MenuItem item) {
                 toYearButtonPress(item);
                 fromYearButtonPress(item);
-                authorButtonPressed(item);
+                litButtonPressed(item);
 
             }
         });

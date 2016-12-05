@@ -6,26 +6,36 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Created by TinieT on 11/22/2016.
  */
 
-public class BookData {
+public class BookData implements Serializable{
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //CLASS INSTANCE VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private String title;
-    private String author;
-    private String description;
+    private static final long serialVersionUID = 1L;
+    private String title = " ";
+    private String author = " ";
+    private String publishYear = " ";
+    private String description = " ";
+    private String imgURL = null;
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //END OF CLASS INSTANCE VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public BookData(String URL) throws IOException {
-        Document doc = Jsoup.connect(URL).get();
+
+    public BookData(){
+
+    }
+    public BookData(BookResult book) throws IOException {
+        Document doc = Jsoup.connect(book.getBookURL()).get();
         title = pullTitleData(doc);
         author = pullAuthorData(doc);
-        description = pullAuthorData(doc);
+        publishYear = pullPublishYearData(doc);
+        description = pullDescriptionData(doc);
+        imgURL = book.getImgURL();
     }
 
     /**
@@ -35,17 +45,18 @@ public class BookData {
      * @return the author or authors of this specific book
      */
     private String pullAuthorData(Document doc){
-        String outputAuthor = "";
+        String outputAuthor = "none";
         Elements author = doc.getElementsByClass("by");
+        if(author.size() > 0) {
+            Elements holder = author.get(0).getElementsByTag("a");
 
-        Elements holder = author.get(0).getElementsByTag("a");
-
-        if(holder.size() == 1){
-            outputAuthor = removeTags(holder.toString());
-        }
-        else if (holder.size() > 1){
-            for(int i = 0; i < holder.size(); i++){
-                outputAuthor += removeTags(holder.get(i).toString()) +"\n";
+            if (holder.size() == 1) {
+                outputAuthor = removeTags(holder.toString());
+            } else if (holder.size() > 1) {
+                outputAuthor = "";
+                for (int i = 0; i < holder.size(); i++) {
+                    outputAuthor += removeTags(holder.get(i).toString()) + ", ";
+                }
             }
         }
         return outputAuthor;
@@ -71,7 +82,7 @@ public class BookData {
      * @return the description of this specific book
      */
     private String pullDescriptionData(Document doc) {
-        String outputDesc = "";
+        String outputDesc = "No Description Found";
         Elements descData = doc.getElementsByClass("abstract");
         if (descData.size() > 0) {
             Element descText = descData.get(1);
@@ -86,6 +97,14 @@ public class BookData {
             }
         }
         return outputDesc;
+    }
+    private String pullPublishYearData(Document doc){
+        String output = "no publish date found";
+        Elements El = doc.getElementsByClass("basicBib");
+        Element holder = El.get(0);
+        output = removeTags((holder).getElementsByTag("dd").get(1).toString()).trim();
+
+        return output;
     }
 
     /**
@@ -127,12 +146,24 @@ public class BookData {
         return author;
     }
     /**
+     * get this publishYear class Attribute
+     * @return publishYear: this publish year Attribute
+     */
+    public String getPublishYear() {
+        return publishYear;
+    }
+    /**
      * get this description class Attribute
      * @return description: this description Attribute
      */
     public String getDescription() {
         return description;
     }
+    /**
+     * get this image URL class Attribute
+     * @return imgURL: this Image URL Attribute
+     */
+    public String getImgURL() {return imgURL;}
 
 
 }

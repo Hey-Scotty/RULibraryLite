@@ -13,8 +13,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="lexicon_industries_logo">Lexicon Industries Logo</string>
+
     <string-array name="lit_type_list">
-        <item>selectType</item>
+        <item>Select Media Type</item>
         <item>Book</item>
         <item>Print Book</item>
         <item>E-Book</item>

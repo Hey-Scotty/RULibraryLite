@@ -71,10 +71,12 @@ public class ParseAlot {
         int amtOfPagesToSearch = 2;
         for (int i=1;i<amtOfPagesToSearch;i++) {
             Document doc;
-            doc = Jsoup.connect(mainURL+ pages.get(i)).timeout(20000).get();
-            addToList(doc);
-            System.out.println("full url of the values " + mainURL+ pages.get(i));
-            System.out.println("added " + (i+1) + "webpage");
+            if(pages.size() > 1) {
+                doc = Jsoup.connect(mainURL + pages.get(i)).timeout(20000).get();
+                addToList(doc);
+                System.out.println("full url of the values " + mainURL + pages.get(i));
+                System.out.println("added " + (i + 1) + "webpage");
+            }
         }
     }
 
@@ -101,8 +103,10 @@ public class ParseAlot {
             if (removeDoop % 2 == 0 && bookLocation > 0 && el.attr("src").length() > 2 ) {
                 if (el.attr("src").substring(0, 17).equals("//coverart.oclc.o")) {
                     String imgURL = snipImgSrc(el.attr("src"));
-                    bookList.get(bookList.size() - bookLocation).setImgURL(imgURL);
-                    System.out.println(bookList.get(bookList.size() - bookLocation).getBookURL());
+                    if(bookList.size() > 10)
+                        bookList.get(bookList.size() - bookLocation).setImgURL(imgURL);
+                    else if(bookList.size() <= 10)
+                        bookList.get(counter).setImgURL(imgURL);
                     counter++;
                     bookLocation --;
 

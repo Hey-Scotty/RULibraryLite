@@ -68,7 +68,9 @@ import ActivityPackages.R;
             else{ grid = (View) convertView; }
             TextView textView = (TextView) grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+
             textView.setText(books.get(position).getName());
+            System.out.println("Position: " + position  + " " + books.get(position).getName());
             Picasso.with(mContext).load(books.get(position).getImgURL()).into(imageView);
             return grid;
         }

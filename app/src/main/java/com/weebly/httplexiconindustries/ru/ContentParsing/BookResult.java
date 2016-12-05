@@ -1,9 +1,6 @@
 package com.weebly.httplexiconindustries.ru.ContentParsing;
 
-import android.graphics.drawable.Drawable;
 
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by TinieT on 11/13/2016.
