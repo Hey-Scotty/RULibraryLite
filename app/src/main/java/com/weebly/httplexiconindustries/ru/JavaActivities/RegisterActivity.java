@@ -53,24 +53,32 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
-                            if(password.equals(cPassword)) {
-                                if (success) {
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    RegisterActivity.this.startActivity(intent);
+                            if(etUsername.getText().toString().trim().equals("") || etName.getText().toString().trim().equals("") || etEmail.getText().toString().trim().equals("") || etPassword.getText().toString().trim().equals("") || etConfirmPassword.getText().toString().trim().equals("")){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("One or More Text Fields are Empty.")
+                                        .setNegativeButton("Try Again", null)
+                                        .create()
+                                        .show();
+                            }
+                            else {
+                                if (password.equals(cPassword)) {
+                                    if (success) {
+                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                        RegisterActivity.this.startActivity(intent);
+                                    } else {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                        builder.setMessage("Register Failed.")
+                                                .setNegativeButton("Try Again", null)
+                                                .create()
+                                                .show();
+                                    }
                                 } else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                    builder.setMessage("Register Failed.")
+                                    builder.setMessage("Passwords Do Not Match.")
                                             .setNegativeButton("Try Again", null)
                                             .create()
                                             .show();
                                 }
-                            }
-                            else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Passwords Do Not Match.")
-                                        .setNegativeButton("Try Again", null)
-                                        .create()
-                                        .show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
