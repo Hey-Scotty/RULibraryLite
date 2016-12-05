@@ -86,9 +86,18 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
-                RegisterRequest registerRequest = new RegisterRequest(username, password, name, email, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(registerRequest);
+                if(etUsername.getText().toString().trim().equals("") || etName.getText().toString().trim().equals("") || etEmail.getText().toString().trim().equals("") || etPassword.getText().toString().trim().equals("") || etConfirmPassword.getText().toString().trim().equals("")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("One or More Text Fields are Empty.")
+                            .setNegativeButton("Try Again", null)
+                            .create()
+                            .show();
+                }
+                else {
+                    RegisterRequest registerRequest = new RegisterRequest(username, password, name, email, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                    queue.add(registerRequest);
+                }
             }
         });
     }
